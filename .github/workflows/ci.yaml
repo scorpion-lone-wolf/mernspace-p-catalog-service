@@ -8,6 +8,7 @@ on:
 jobs:
   test-and-build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v7.0.0
@@ -20,3 +21,5 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm run test
+        env:
+          NODE_ENV: test
