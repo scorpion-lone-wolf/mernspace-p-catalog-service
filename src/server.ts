@@ -1,13 +1,12 @@
 import app from "./app.js";
+import config from "./config/index.js";
+import { logger } from "./config/logger.js";
 
-
-
-const startServer = ()=>{
-    app.listen(5502, ()=>{
-        console.log("Server is running on port 5502");
-    });
-}
-
-
+const PORT = config.PORT || 5502;
+const startServer = () => {
+  app.listen(PORT, () => {
+    logger.info(`Server is running on port: ${PORT}`);
+  });
+};
 
 startServer();
