@@ -1,6 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
 import type { HttpError } from "http-errors";
-import config from "../config/index.js";
 import { logger } from "../config/logger.js";
 
 export const globalErrorHandler = (
@@ -12,7 +11,7 @@ export const globalErrorHandler = (
   const errorId = crypto.randomUUID();
 
   const statusCode = err.status || 500;
-  const isProduction = config.NODE_ENV === "production";
+  const isProduction = process.env.NODE_ENV === "production";
   const message = isProduction ? `An unexpected error occurred.` : err.message;
 
   logger.error(err.message, {

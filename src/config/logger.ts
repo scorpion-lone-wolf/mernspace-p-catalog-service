@@ -1,7 +1,6 @@
 import winston from "winston";
-import config from "./index.js";
 
-const currentEnv = config.NODE_ENV || "development";
+const currentEnv = process.env.NODE_ENV || "development";
 export const logger = winston.createLogger({
   // setup log levels
   level: currentEnv === "production" ? "info" : "debug",
