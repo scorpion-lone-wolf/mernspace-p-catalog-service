@@ -1,4 +1,5 @@
 import express from "express";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
 
 const app = express();
 // Remove the X-Powered-By header
@@ -9,5 +10,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Catalog Service is cooking!");
 });
+
+app.use(globalErrorHandler);
 
 export default app;
