@@ -25,6 +25,7 @@ export const logger = winston.createLogger({
     // this store all the logs irrespective of the level
     new winston.transports.File({
       filename: "combined.log",
+      dirname: "logs",
       silent: currentEnv === "test",
     }),
   ],
