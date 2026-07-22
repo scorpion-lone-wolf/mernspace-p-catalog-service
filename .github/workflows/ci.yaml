@@ -23,3 +23,4 @@ jobs:
         run: npm run test
         env:
           NODE_ENV: test
+          PORT: 5502
