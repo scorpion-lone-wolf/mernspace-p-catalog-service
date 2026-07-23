@@ -19,13 +19,13 @@ export class CategoryController {
         priceConfiguration,
         attributes,
       });
+      this.logger.info(`Category created successfully with id: ${result._id}`);
       return res.json({ id: result._id });
     } catch (error) {
       if (error instanceof Error) {
-        this.logger.error(error.message);
         throw createHttpError(400, error.message);
       }
-      throw error;
+      throw createHttpError(500, "Failed to create Category");
     }
   }
 }
