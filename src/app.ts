@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello from Catalog service! " });
 });
 // routes
-app.use("/category", categoryRouter);
+app.use("/categories", categoryRouter);
 
 app.use(globalErrorHandler);
 

@@ -1,11 +1,13 @@
 import express, { type Request, type Response } from "express";
+import { logger } from "../../config/logger.js";
 import { CategoryController } from "./category.controller.js";
+import { CategoryService } from "./category.service.js";
 import categoryValidator from "./category.validator.js";
 import CreateCategorySchema from "./createCategory.schema.js";
 
 const categoryRouter = express.Router();
-
-const categoryController = new CategoryController();
+const categoryService = new CategoryService();
+const categoryController = new CategoryController(logger, categoryService);
 categoryRouter.post(
   "/",
   categoryValidator(CreateCategorySchema),

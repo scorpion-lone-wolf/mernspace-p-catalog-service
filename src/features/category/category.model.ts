@@ -47,4 +47,4 @@ const categorySchema = new mongoose.Schema<Category>({
   },
 });
 // create model based on schema (collection will be categories)
-export default mongoose.model("Category", categorySchema);
+export const CategoryModel = mongoose.model("Category", categorySchema);
