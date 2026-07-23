@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "dev": "NODE_ENV=production nodemon --exec tsx src/server.ts",
+    "dev": "NODE_ENV=development nodemon --exec tsx src/server.ts",
     "build": "npx tsc",
     "start": "node dist/src/server.js",
     "prepare": "husky"
@@ -19,7 +19,8 @@
     "express": "^5.2.1",
     "http-errors": "^2.0.1",
     "mongoose": "^9.8.0",
-    "winston": "^3.19.0"
+    "winston": "^3.19.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
