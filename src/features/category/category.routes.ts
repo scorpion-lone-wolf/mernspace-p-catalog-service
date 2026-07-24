@@ -1,6 +1,8 @@
 import express, { type Request, type Response } from "express";
 import { logger } from "../../config/logger.js";
+import { UserRole } from "../../enums/index.js";
 import { authenticate } from "../../middlewares/authenticate.js";
+import authorized from "../../middlewares/authorized.js";
 import { CategoryController } from "./category.controller.js";
 import { CategoryService } from "./category.service.js";
 import categoryValidator from "./category.validator.js";
@@ -12,6 +14,7 @@ const categoryController = new CategoryController(logger, categoryService);
 categoryRouter.post(
   "/",
   authenticate,
+  authorized([UserRole.ADMIN]),
   categoryValidator(CreateCategorySchema),
   (req: Request, res: Response) => categoryController.create(req, res),
 );
