@@ -1,7 +1,7 @@
 import cookieParser from "cookie-parser";
 import express from "express";
+import { globalErrorHandler } from "./common/middlewares/globalErrorHandler.js";
 import categoryRouter from "./features/category/category.routes.js";
-import { globalErrorHandler } from "./middlewares/globalErrorHandler.js";
 const app = express();
 // Remove the X-Powered-By header
 app.disable("x-powered-by");

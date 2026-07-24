@@ -1,8 +1,8 @@
 import express, { type Request, type Response } from "express";
+import { UserRole } from "../../common/enums/index.js";
+import { authenticate } from "../../common/middlewares/authenticate.js";
+import authorized from "../../common/middlewares/authorized.js";
 import { logger } from "../../config/logger.js";
-import { UserRole } from "../../enums/index.js";
-import { authenticate } from "../../middlewares/authenticate.js";
-import authorized from "../../middlewares/authorized.js";
 import { CategoryController } from "./category.controller.js";
 import { CategoryService } from "./category.service.js";
 import categoryValidator from "./category.validator.js";

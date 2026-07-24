@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
 
-import { jwkClient } from "../config/jwksClient.js";
+import { jwkClient } from "../../config/jwksClient.js";
 import type { TokenPayload } from "../types/index.js";
 
 // This function is responsible to validate the token

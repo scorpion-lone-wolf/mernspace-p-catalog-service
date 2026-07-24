@@ -1,4 +1,4 @@
-import type { TokenPayload } from "./index";
+import type { TokenPayload } from "./index.ts";
 declare global {
   namespace Express {
     interface Request {
