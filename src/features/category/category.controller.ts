@@ -28,4 +28,29 @@ export class CategoryController {
       throw createHttpError(500, "Failed to create Category");
     }
   }
+  async getCategories(req: Request, res: Response) {
+    try {
+      const { page, limit } = req.query;
+      const pageNumber = Math.max(1, Number(page) || 1);
+      const limitNumber = Math.max(1, Number(limit) || 10);
+      const { categories, count } = await this.categoryService.getAllCategories(
+        {
+          pageNumber,
+          limitNumber,
+        },
+      );
+      return res.json({
+        data: categories,
+        total: count,
+        page: pageNumber,
+        limit: limitNumber,
+      });
+    } catch (error) {
+      this.logger.error(error);
+      if (error instanceof Error) {
+        throw createHttpError(400, error.message);
+      }
+      throw createHttpError(500, "Failed to get Categories");
+    }
+  }
 }

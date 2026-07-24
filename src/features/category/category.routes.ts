@@ -11,12 +11,23 @@ import CreateCategorySchema from "./createCategory.schema.js";
 const categoryRouter = express.Router();
 const categoryService = new CategoryService();
 const categoryController = new CategoryController(logger, categoryService);
+
 categoryRouter.post(
   "/",
   authenticate,
   authorized([UserRole.ADMIN]),
   categoryValidator(CreateCategorySchema),
   (req: Request, res: Response) => categoryController.create(req, res),
+);
+
+// this is public endpoint
+categoryRouter.get("/", (req: Request, res: Response) =>
+  categoryController.getCategories(req, res),
+);
+
+// this is public endpoint
+categoryRouter.get("/:id", (req: Request, res: Response) =>
+  categoryController.getCategory(req, res),
 );
 
 export default categoryRouter;

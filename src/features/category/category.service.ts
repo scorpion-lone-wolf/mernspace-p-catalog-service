@@ -11,4 +11,17 @@ export class CategoryService {
 
     return result;
   }
+
+  async getAllCategories({ pageNumber = 1, limitNumber = 10 }) {
+    const skip = (pageNumber - 1) * limitNumber;
+    const [categories, count] = await Promise.all([
+      CategoryModel.find()
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limitNumber)
+        .exec(),
+      CategoryModel.countDocuments(),
+    ]);
+    return { categories, count };
+  }
 }
