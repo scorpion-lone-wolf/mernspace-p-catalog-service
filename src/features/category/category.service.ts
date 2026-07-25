@@ -24,4 +24,8 @@ export class CategoryService {
     ]);
     return { categories, count };
   }
+  async getCategory(id: string) {
+    const category = await CategoryModel.findById(id);
+    return category;
+  }
 }

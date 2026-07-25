@@ -53,4 +53,17 @@ export class CategoryController {
       throw createHttpError(500, "Failed to get Categories");
     }
   }
+  async getCategory(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const category = await this.categoryService.getCategory(id as string);
+      return res.json(category);
+    } catch (error) {
+      this.logger.error(error);
+      if (error instanceof Error) {
+        throw createHttpError(400, error.message);
+      }
+      throw createHttpError(500, "Failed to get Category");
+    }
+  }
 }
