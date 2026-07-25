@@ -57,13 +57,47 @@ export class CategoryController {
     try {
       const { id } = req.params;
       const category = await this.categoryService.getCategory(id as string);
-      return res.json(category);
+      return res.json({ data: category });
     } catch (error) {
       this.logger.error(error);
       if (error instanceof Error) {
         throw createHttpError(400, error.message);
       }
       throw createHttpError(500, "Failed to get Category");
+    }
+  }
+
+  async updateCategory(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { name, priceConfiguration, attributes } = req.body;
+      await this.categoryService.updateCategory(id as string, {
+        name,
+        priceConfiguration,
+        attributes,
+      });
+      return res.json({ message: "Category updated successfully" });
+    } catch (error) {
+      this.logger.error(error);
+      if (error instanceof Error) {
+        throw createHttpError(400, error.message);
+      }
+      throw createHttpError(500, "Failed to update Category");
+    }
+  }
+
+  async deleteCategory(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      await this.categoryService.deleteCategory(id as string);
+      this.logger.info(`Category deleted successfully with id: ${id}`);
+      return res.json({ message: "Category deleted successfully" });
+    } catch (error) {
+      this.logger.error(error);
+      if (error instanceof Error) {
+        throw createHttpError(400, error.message);
+      }
+      throw createHttpError(500, "Failed to delete Category");
     }
   }
 }

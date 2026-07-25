@@ -6,7 +6,8 @@ import { logger } from "../../config/logger.js";
 import { CategoryController } from "./category.controller.js";
 import { CategoryService } from "./category.service.js";
 import categoryValidator from "./category.validator.js";
-import CreateCategorySchema from "./createCategory.schema.js";
+import CreateCategorySchema from "./zodSchema/createCategory.schema.js";
+import UpdateCategorySchema from "./zodSchema/updateCategory.schema.js";
 
 const categoryRouter = express.Router();
 const categoryService = new CategoryService();
@@ -28,6 +29,21 @@ categoryRouter.get("/", (req: Request, res: Response) =>
 // this is public endpoint
 categoryRouter.get("/:id", (req: Request, res: Response) =>
   categoryController.getCategory(req, res),
+);
+
+categoryRouter.patch(
+  "/:id",
+  categoryValidator(UpdateCategorySchema),
+  authenticate,
+  authorized([UserRole.ADMIN]),
+  (req: Request, res: Response) => categoryController.updateCategory(req, res),
+);
+
+categoryRouter.delete(
+  "/:id",
+  authenticate,
+  authorized([UserRole.ADMIN]),
+  (req: Request, res: Response) => categoryController.deleteCategory(req, res),
 );
 
 export default categoryRouter;

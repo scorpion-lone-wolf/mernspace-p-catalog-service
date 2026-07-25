@@ -28,4 +28,28 @@ export class CategoryService {
     const category = await CategoryModel.findById(id);
     return category;
   }
+
+  async updateCategory(id: string, data: Category) {
+    const updateData: Record<string, any> = {};
+    const { name, priceConfiguration, attributes } = data;
+
+    if (name) {
+      updateData.name = name;
+    }
+    if (priceConfiguration) {
+      updateData.priceConfiguration = priceConfiguration;
+    }
+    if (attributes) {
+      updateData.attributes = attributes;
+    }
+    return await CategoryModel.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true },
+    );
+  }
+
+  async deleteCategory(id: string) {
+    return await CategoryModel.findByIdAndDelete(id);
+  }
 }
