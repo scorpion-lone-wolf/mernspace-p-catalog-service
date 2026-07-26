@@ -2,10 +2,10 @@ import express, { type Request, type Response } from "express";
 import { UserRole } from "../../common/enums/index.js";
 import { authenticate } from "../../common/middlewares/authenticate.js";
 import authorized from "../../common/middlewares/authorized.js";
+import { default as bodyValidator } from "../../common/middlewares/body.validator.js";
 import { logger } from "../../config/logger.js";
 import { CategoryController } from "./category.controller.js";
 import { CategoryService } from "./category.service.js";
-import categoryValidator from "./category.validator.js";
 import CreateCategorySchema from "./zodSchema/createCategory.schema.js";
 import UpdateCategorySchema from "./zodSchema/updateCategory.schema.js";
 
@@ -17,7 +17,7 @@ categoryRouter.post(
   "/",
   authenticate,
   authorized([UserRole.ADMIN]),
-  categoryValidator(CreateCategorySchema),
+  bodyValidator(CreateCategorySchema),
   (req: Request, res: Response) => categoryController.create(req, res),
 );
 
@@ -33,7 +33,7 @@ categoryRouter.get("/:id", (req: Request, res: Response) =>
 
 categoryRouter.patch(
   "/:id",
-  categoryValidator(UpdateCategorySchema),
+  bodyValidator(UpdateCategorySchema),
   authenticate,
   authorized([UserRole.ADMIN]),
   (req: Request, res: Response) => categoryController.updateCategory(req, res),

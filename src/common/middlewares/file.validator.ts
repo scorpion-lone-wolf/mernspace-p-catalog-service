@@ -2,9 +2,13 @@ import type { NextFunction, Request, Response } from "express";
 import createHttpError from "http-errors";
 import type { ZodType } from "zod";
 
-const categoryValidator =
+const fileValidator =
   (schema: ZodType) => (req: Request, res: Response, next: NextFunction) => {
-    const result = schema.safeParse(req.body);
+    if (!req.file) {
+      return next(createHttpError(400, "Image is required"));
+    }
+
+    const result = schema.safeParse(req.file);
 
     if (!result.success) {
       const issue = result.error.issues[0];
@@ -15,8 +19,7 @@ const categoryValidator =
       return next(createHttpError(400, `${path}: ${message}`));
     }
 
-    req.body = result.data;
     next();
   };
 
-export default categoryValidator;
+export default fileValidator;
