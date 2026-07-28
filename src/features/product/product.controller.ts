@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import createHttpError from "http-errors";
 import type { Logger } from "winston";
+import { UserRole } from "../../common/enums/index.js";
 import { imageUploadToS3 } from "../../common/utils/fileupload.js";
 import type { FileStorage } from "../../interface/storage.interface.js";
 import type { ProductService } from "./produt.service.js";
@@ -60,6 +61,21 @@ export class ProductController {
   async updateProduct(req: Request, res: Response) {
     try {
       const { productId } = req.params;
+      // check if product exist or not
+      const product = await this.productService.getProduct(productId as string);
+      if (!product) {
+        throw createHttpError(404, "Product not found");
+      }
+      // check if user is manager then he can only update
+      // when the product belongs to the same tenant in which he belongs
+      if (req.user?.role === UserRole.MANAGER) {
+        if (product.tenantId !== req.user.tenant) {
+          throw createHttpError(
+            403,
+            "Forbidden, You can't update this product",
+          );
+        }
+      }
       const image = req.file;
       const {
         name,
@@ -81,9 +97,6 @@ export class ProductController {
 
       if (image) {
         // remove the old image first
-        const product: Product | null = await this.productService.getProduct(
-          productId as string,
-        );
         if (product) {
           // extract the file name from the url
           const imageName = product.image.split("/").pop();

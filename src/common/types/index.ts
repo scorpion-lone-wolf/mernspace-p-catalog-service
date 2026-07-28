@@ -7,4 +7,5 @@ export interface TokenPayload extends jwt.JwtPayload {
   jti: string;
   iss: string;
   alg: string;
+  tenant: string;
 }
