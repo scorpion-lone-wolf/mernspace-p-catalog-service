@@ -12,6 +12,7 @@ import { ProductController } from "./product.controller.js";
 import { ProductService } from "./produt.service.js";
 import { createProductSchema } from "./zodSchema/createProduct.schema.js";
 import { imageSchema } from "./zodSchema/image.schema.js";
+import { updateProductSchema } from "./zodSchema/updateProduct.schema.js";
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 3 * 1024 * 1024 },
@@ -37,6 +38,16 @@ productRouter.post(
   bodyValidator(createProductSchema),
   fileValidator(imageSchema),
   (req: Request, res: Response) => productController.createProduct(req, res),
+);
+
+productRouter.patch(
+  "/:productId",
+  authenticate,
+  authorized([UserRole.ADMIN, UserRole.MANAGER]),
+  upload.single("image"), // this middleware ensures that the file object is present in req.file
+  parseJsonFields(["priceConfiguration", "attribute"]),
+  bodyValidator(updateProductSchema),
+  (req: Request, res: Response) => productController.updateProduct(req, res),
 );
 
 export default productRouter;
