@@ -8,4 +8,8 @@ export class ProductService {
   async updateProduct(productId: string, updateData: Partial<Product>) {
     return await ProductModel.updateOne({ _id: productId }, updateData);
   }
+
+  async getProduct(id: string) {
+    return await ProductModel.findById(id);
+  }
 }

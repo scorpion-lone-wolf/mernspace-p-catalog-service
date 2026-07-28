@@ -80,7 +80,16 @@ export class ProductController {
       if (categoryId !== undefined) updateData.categoryId = categoryId;
 
       if (image) {
-        // save image to s3 -> will return s3 public url
+        // remove the old image first
+        const product: Product | null = await this.productService.getProduct(
+          productId as string,
+        );
+        if (product) {
+          // extract the file name from the url
+          const imageName = product.image.split("/").pop();
+          await this.storage.delete(imageName as string);
+        }
+        //  save image to s3 -> will return s3 public url
         const imageName = crypto.randomUUID() + image.originalname;
         await imageUploadToS3(image, this.storage, imageName);
         const imageUrl = this.storage.getObjectUrl(imageName);
