@@ -9,7 +9,6 @@ const fileValidator =
     }
 
     const result = schema.safeParse(req.file);
-
     if (!result.success) {
       const issue = result.error.issues[0];
 
