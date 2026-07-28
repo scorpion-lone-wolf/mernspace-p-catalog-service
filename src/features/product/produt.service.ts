@@ -6,7 +6,14 @@ export class ProductService {
     return await ProductModel.create(product);
   }
   async updateProduct(productId: string, updateData: Partial<Product>) {
-    return await ProductModel.findOneAndUpdate({ _id: productId }, updateData);
+    return ProductModel.findByIdAndUpdate(
+      productId,
+      { $set: updateData },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
   }
 
   async getProduct(id: string) {
