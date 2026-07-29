@@ -86,6 +86,7 @@ export class ProductController {
         categoryId: categoryId as string,
         isPublished: isPublished as boolean,
       });
+      this.logger.info("Product fetched successfully");
       return res.json({
         data: products,
         total: count,

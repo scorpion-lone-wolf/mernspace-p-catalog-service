@@ -60,7 +60,7 @@ export class ProductService {
         .sort({ createdAt: -1 })
         .skip((pageNumber - 1) * limitNumber)
         .limit(limitNumber)
-        .populate("categoryId")
+        .populate("categoryId", "_id name attributes priceConfiguration")
         .exec(),
       ProductModel.countDocuments(filters),
     ]);
