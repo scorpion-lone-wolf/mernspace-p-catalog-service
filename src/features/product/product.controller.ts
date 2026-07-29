@@ -1,11 +1,13 @@
 import type { Request, Response } from "express";
 import createHttpError from "http-errors";
+import mongoose from "mongoose";
 import type { Logger } from "winston";
 import { UserRole } from "../../common/enums/index.js";
 import { imageUploadToS3 } from "../../common/utils/fileupload.js";
 import type { FileStorage } from "../../interface/storage.interface.js";
 import type { ProductService } from "./produt.service.js";
 import type { Product } from "./types.js";
+import { getProductQuerySchema } from "./zodSchema/getProductQuery.schema.js";
 export class ProductController {
   constructor(
     private readonly logger: Logger,
@@ -55,7 +57,49 @@ export class ProductController {
     }
   }
 
-  getAllProduct(req: Request, res: Response) {}
+  async getAllProduct(req: Request, res: Response) {
+    try {
+      // valdiate query
+      const result = getProductQuerySchema.safeParse(req.query);
+      if (!result.success) {
+        const issue = result.error.issues[0];
+
+        const path = issue?.path.join(".") ?? "query";
+        const message = issue?.message ?? "Invalid query args";
+
+        throw createHttpError(400, `${path}: ${message}`);
+      }
+      // also validate categoryId should be valid mongo id
+      if (result?.data?.categoryId) {
+        if (!mongoose.Types.ObjectId.isValid(result.data.categoryId)) {
+          throw createHttpError(400, "Invalid category id");
+        }
+      }
+      const { page, limit, search, tenantId, categoryId, isPublished } =
+        result.data;
+
+      const { products, count } = await this.productService.getAllProduct({
+        pageNumber: page,
+        limitNumber: limit,
+        search: search as string,
+        tenantId: tenantId as string,
+        categoryId: categoryId as string,
+        isPublished: isPublished as boolean,
+      });
+      return res.json({
+        data: products,
+        total: count,
+        page,
+        limit,
+      });
+    } catch (error) {
+      this.logger.error(error);
+      if (error instanceof Error) {
+        throw createHttpError(400, error.message);
+      }
+      throw createHttpError(500, "Failed to get Product");
+    }
+  }
   getProduct(req: Request, res: Response) {}
 
   async updateProduct(req: Request, res: Response) {
