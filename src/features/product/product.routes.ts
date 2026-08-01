@@ -5,13 +5,13 @@ import { authenticate } from "../../common/middlewares/authenticate.js";
 import authorized from "../../common/middlewares/authorized.js";
 import bodyValidator from "../../common/middlewares/body.validator.js";
 import fileValidator from "../../common/middlewares/file.validator.js";
+import parseJsonFields from "../../common/middlewares/parseJsonFields.validator.js";
 import { S3StorageService } from "../../common/services/s3Storage.service.js";
+import { imageSchema } from "../../common/zodSchema/image.schema.js";
 import { logger } from "../../config/logger.js";
-import parseJsonFields from "./middleware/parseJsonFields.validator.js";
 import { ProductController } from "./product.controller.js";
 import { ProductService } from "./produt.service.js";
 import { createProductSchema } from "./zodSchema/createProduct.schema.js";
-import { imageSchema } from "./zodSchema/image.schema.js";
 import { updateProductSchema } from "./zodSchema/updateProduct.schema.js";
 const upload = multer({
   storage: multer.memoryStorage(),
