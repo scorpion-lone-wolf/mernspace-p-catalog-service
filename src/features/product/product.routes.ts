@@ -53,6 +53,10 @@ productRouter.patch(
 productRouter.get("/", (req: Request, res: Response) =>
   productController.getAllProduct(req, res),
 );
+
+productRouter.get("/:productId", (req: Request, res: Response) =>
+  productController.getProduct(req, res),
+);
 export default productRouter;
 
 // Multer Middleware take the file type from multipart/form-data and stores it in req.file

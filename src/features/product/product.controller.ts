@@ -98,10 +98,23 @@ export class ProductController {
       if (error instanceof Error) {
         throw createHttpError(400, error.message);
       }
+      throw createHttpError(500, "Failed to get Products");
+    }
+  }
+
+  async getProduct(req: Request, res: Response) {
+    try {
+      const { productId } = req.params;
+      const product = await this.productService.getProduct(productId as string);
+      return res.json({ data: product });
+    } catch (error) {
+      this.logger.error(error);
+      if (error instanceof Error) {
+        throw createHttpError(400, error.message);
+      }
       throw createHttpError(500, "Failed to get Product");
     }
   }
-  getProduct(req: Request, res: Response) {}
 
   async updateProduct(req: Request, res: Response) {
     try {
