@@ -181,5 +181,19 @@ export class ProductController {
     }
   }
 
-  deleteProduct(req: Request, res: Response) {}
+  async deleteProduct(req: Request, res: Response) {
+    try {
+      const { productId } = req.params;
+      const product = await this.productService.deleteProduct(
+        productId as string,
+      );
+      return res.json({ success: true });
+    } catch (error) {
+      this.logger.error(error);
+      if (error instanceof Error) {
+        throw createHttpError(400, error.message);
+      }
+      throw createHttpError(500, "Failed to get Product");
+    }
+  }
 }

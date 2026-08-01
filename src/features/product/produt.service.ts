@@ -66,4 +66,8 @@ export class ProductService {
     ]);
     return { products, count };
   }
+
+  async deleteProduct(id: string) {
+    return await ProductModel.findByIdAndDelete(id);
+  }
 }
