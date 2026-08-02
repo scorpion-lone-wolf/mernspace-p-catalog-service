@@ -9,7 +9,7 @@ export const getProductQuerySchema = z.object({
   isPublished: z
     .enum(["true", "false"])
     .transform((value) => value === "true")
-    .default(true),
+    .optional(),
 });
 
 // NOTE:
