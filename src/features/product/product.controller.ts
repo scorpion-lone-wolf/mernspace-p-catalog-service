@@ -24,6 +24,7 @@ export class ProductController {
         attribute,
         tenantId,
         categoryId,
+        isPublished,
       } = req.body;
       const image = req.file;
       let imageUrl: string | undefined = "";
@@ -45,6 +46,7 @@ export class ProductController {
         tenantId,
         categoryId,
         image: imageUrl,
+        isPublished,
       } as Product);
 
       res.json({ id: productData._id });

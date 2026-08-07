@@ -18,4 +18,5 @@ export const createProductSchema = z.object({
   ),
   tenantId: z.string().nonempty({ error: "Tenant is required" }),
   categoryId: z.string().nonempty({ error: "Category is required" }),
+  isPublished: z.coerce.boolean().default(false),
 });
